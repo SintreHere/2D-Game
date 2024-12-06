@@ -20,7 +20,6 @@ public class KeyHandler implements KeyListener{
         // TODO Auto-generated method stub
 
         int code = e.getKeyCode();
-        System.out.println(code);
         if(code == KeyEvent.VK_C || code == KeyEvent.VK_UP) {
             upPressed = true;
         }

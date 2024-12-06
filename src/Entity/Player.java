@@ -10,9 +10,12 @@ import java.io.IOException;
 
 public class Player extends entity {
 
+    private static Player instance ;
 
     static GamePanel gp;
     static KeyHandler keyH;
+    private static int spriteNum;
+    private static int spriteCounter;
 
     public Player (GamePanel gp, KeyHandler keyH){
         this.gp = gp;
@@ -20,15 +23,17 @@ public class Player extends entity {
 
         setDefaultValues();
         getPlayerImage();
+        instance = this; // Assign the instance to the static field
     }
 
 
     public void setDefaultValues(){
-        x=100;
-        y=100;
+        x=200;
+        y=200;
         speed=2;
         direction = "down";
-
+        spriteNum = 1; // Start with the first sprite
+        spriteCounter = 0; // Reset sprite counter
 
     }
 
@@ -51,72 +56,72 @@ public class Player extends entity {
     }
 
 
-    public static void update(){
-
-        if(keyH.upPressed)
-        {
-            y -= speed;
-            direction = "up";
+    public static void update() {
+        if (instance == null) {
+            return; // Ensure the instance exists before updating
         }
 
-        if(keyH.downPressed == true)
-        {
-            y += speed;
-            direction = "down";
+        boolean moving = false;
 
+        if (instance.keyH.upPressed) {
+            instance.y -= instance.speed;
+            instance.direction = "up";
+            moving = true;
         }
 
-        if(keyH.leftPressed == true)
-        {
-            x -= speed;
-            direction = "left";
-
+        if (instance.keyH.downPressed) {
+            instance.y += instance.speed;
+            instance.direction = "down";
+            moving = true;
         }
 
-        if(keyH.rightPressed == true)
-        {
-            x += speed;
-            direction = "right";
-
+        if (instance.keyH.leftPressed) {
+            instance.x -= instance.speed;
+            instance.direction = "left";
+            moving = true;
         }
 
+        if (instance.keyH.rightPressed) {
+            instance.x += instance.speed;
+            instance.direction = "right";
+            moving = true;
+        }
 
+        if (moving) {
+            instance.spriteCounter++;
+            if (instance.spriteCounter > 15) { // Adjust for half a second
+                instance.spriteNum = (instance.spriteNum == 1) ? 2 : 1;
+                instance.spriteCounter = 0;
+            }
+        }
     }
 
-    public static void draw(Graphics2D g2){
-        //  g2.fillRect(x, y, gp.tileSize , gp.tileSize ); -> for rectangle
-        //   g2.dispose();
+    // Static draw method
+    public static void draw(Graphics2D g2) {
+        if (instance == null) {
+            return; // Ensure the instance exists before drawing
+        }
 
         BufferedImage image = null;
 
-        switch (direction){
-
+        switch (instance.direction) {
             case "up":
-                image = up1;
+                image = (instance.spriteNum == 1) ? instance.up1 : instance.up2;
                 break;
-
             case "down":
-                image = down1;
+                image = (instance.spriteNum == 1) ? instance.down1 : instance.down2;
                 break;
-
-
             case "left":
-                image = left1;
+                image = (instance.spriteNum == 1) ? instance.left1 : instance.left2;
                 break;
-
-
             case "right":
-                image = right1;
+                image = (instance.spriteNum == 1) ? instance.right1 : instance.right2;
                 break;
-
             default:
-                image = down1;
+                image = instance.down1;
                 break;
         }
 
-        g2.drawImage(image, x,y,gp.tileSize,gp.tileSize,null);
-
-
+        g2.drawImage(image, instance.x, instance.y, instance.gp.tileSize, instance.gp.tileSize, null);
     }
-
 }

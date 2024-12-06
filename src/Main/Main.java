@@ -11,7 +11,7 @@ public class Main {
 
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
-        window.setTitle("Title");
+        window.setTitle("WhiteMore");
         window.add(gp);
         window.pack();
         window.setLocationRelativeTo(null);
