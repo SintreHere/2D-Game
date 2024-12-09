@@ -28,6 +28,9 @@ This game is a work in progress! Here’s what I plan to add in future iteration
 
 
 
+
+
+## Suggestions:
 Do Drop in your suggestions and I would be happy to add them up as a feature!
 
 
