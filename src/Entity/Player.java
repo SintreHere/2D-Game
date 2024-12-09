@@ -16,10 +16,15 @@ public class Player extends entity {
     static KeyHandler keyH;
     private static int spriteNum;
     private static int spriteCounter;
+    public final int screenX;
+    public final int screenY;
 
     public Player (GamePanel gp, KeyHandler keyH){
         this.gp = gp;
         this.keyH = keyH;
+
+        screenX = gp.screenWidth/2 - (gp.tileSize/2);
+        screenY = gp.screenHeight/2 - (gp.tileSize/2);
 
         setDefaultValues();
         getPlayerImage();
@@ -28,8 +33,8 @@ public class Player extends entity {
 
 
     public void setDefaultValues(){
-        x=200;
-        y=200;
+        worldX=gp.tileSize * 23;
+        worldY=gp.tileSize *21;
         speed=2;
         direction = "down";
         spriteNum = 1; // Start with the first sprite
@@ -64,25 +69,25 @@ public class Player extends entity {
         boolean moving = false;
 
         if (instance.keyH.upPressed) {
-            instance.y -= instance.speed;
+            instance.worldY -= instance.speed;
             instance.direction = "up";
             moving = true;
         }
 
         if (instance.keyH.downPressed) {
-            instance.y += instance.speed;
+            instance.worldY += instance.speed;
             instance.direction = "down";
             moving = true;
         }
 
         if (instance.keyH.leftPressed) {
-            instance.x -= instance.speed;
+            instance.worldX -= instance.speed;
             instance.direction = "left";
             moving = true;
         }
 
         if (instance.keyH.rightPressed) {
-            instance.x += instance.speed;
+            instance.worldX += instance.speed;
             instance.direction = "right";
             moving = true;
         }
@@ -122,6 +127,6 @@ public class Player extends entity {
                 break;
         }
 
-        g2.drawImage(image, instance.x, instance.y, instance.gp.tileSize, instance.gp.tileSize, null);
+        g2.drawImage(image, instance.screenX, instance.screenY, instance.gp.tileSize, instance.gp.tileSize, null);
     }
 }
